@@ -9,3 +9,8 @@ export const getUserInfo = () => request({
 export const getUserDetail = (uid:string) => request({
     url:'/user/detail?uid='+uid
 })
+
+//获取用户歌单
+export const getUserPlaylist = (uid:number) => {
+    return request.get('/user/playlist?uid='+ uid);
+}

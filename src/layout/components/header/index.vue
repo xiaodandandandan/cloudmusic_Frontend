@@ -2,22 +2,12 @@
   <div class="header">
     <div class="left">
       <span class="wrapper">CloudMusic</span>
-      <div class="icon first">
-        <el-icon><ArrowLeft /></el-icon>
-      </div>
-      <div class="icon">
-        <el-icon><ArrowRight /></el-icon>
-      </div>
     </div>
     <div class="middle">
-      <el-input
-        v-model="keywords"
-        placeholder="谁 最近很火哦~"
-        :prefix-icon="Search"
-      />
+      <headerSearch />
     </div>
     <div class="right">
-      <el-dropdown v-show="mainStore.isLogin">
+      <el-dropdown v-show="mainStore.isLogin" >
         <span class="el-dropdown-link userInfo">
           <el-avatar :size="35" :src="circleUrl" />
           <span>{{ nickName }}</span>
@@ -41,16 +31,15 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowLeft, ArrowRight, Search } from '@element-plus/icons-vue'
-import { getUserInfo, getUserDetail } from '@/service/user'
-import { logout } from '@/service/login'
+import { getUserInfo, getUserDetail ,logout} from '@/service'
+// import { logout } from '@/service/login'
 import { ref, watch , computed} from 'vue'
 import { useMainStore } from '@/stores'
+import headerSearch from './components/headerSearch.vue'
 type AnyObject = {
   [key: string]: any
 }
 const mainStore = useMainStore()
-const keywords = ref('')
 const userDetail = ref<AnyObject>()
 const changeTheme = ref(false)
 const active = ref(false)
@@ -65,7 +54,7 @@ watch(
     }
   }
 )
-
+//获取用户账户信息
 const getUserpProfile = () => {
   if (mainStore.userProfile?.userId) {
     getUserDetailInfo(mainStore.userProfile.profile.userId)
@@ -85,7 +74,7 @@ const getUserDetailInfo = (uid: string) => {
     }
   })
 }
-
+//退出处理
 const userLogout = () => {
   logout().then((res) => {
     if (res.data.code === 200) {
@@ -96,13 +85,16 @@ const userLogout = () => {
     }
   })
 }
+
 if(mainStore.isLogin){
   getUserpProfile()
-  console.log(mainStore.userProfile.profile)
+  //console.log(mainStore.userProfile.profile)
 }
+//用户名
 const nickName = computed(()=>{
   return mainStore.userProfile.profile.nickname
 })
+
 
 </script>
 
@@ -113,38 +105,15 @@ const nickName = computed(()=>{
   display: flex;
   align-items: center;
   .left {
-    width: 200px;
+    width: 130px;
     display: flex;
     align-items: center;
     .wrapper {
       margin-left: 25px;
     }
-    .icon {
-      margin-top: 5px;
-      margin-left: 20px;
-      position: relative;
-      cursor: pointer;
-    }
-    .icon::after {
-      content: '';
-      width: 25px;
-      height: 25px;
-      position: absolute;
-      background-color: aliceblue;
-      border-radius: 50%;
-      top: -3px;
-      left: -5px;
-      z-index: -1;
-    }
-    .first {
-      margin-left: 15px;
-    }
   }
   .middle {
     flex: 1;
-    .el-input {
-      width: 200px;
-    }
   }
   .n-switch.n-switch--active .n-switch__rail {
     background-color: aliceblue;
@@ -165,6 +134,9 @@ const nickName = computed(()=>{
       .el-avatar {
         margin-right: 5px;
       }
+    }
+    ::v-deep .el-dropdown{
+      --el-dropdown-menu-box-shadow: rgba(0,0,0,0)
     }
   }
   ::v-deep .el-input__wrapper {

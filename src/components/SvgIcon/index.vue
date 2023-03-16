@@ -25,5 +25,6 @@ const iconName = computed(() => {
     fill:currentColor;
     margin-right: 5px;
     overflow: hidden;
+    flex-shrink: 0;
 }
 </style>

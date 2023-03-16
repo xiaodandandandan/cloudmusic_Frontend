@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus'
 
 const service = axios.create({
     baseURL: 'https://www.dnnzmusic.top/',
-    timeout: 5000,
+    timeout: 8000,
     withCredentials: true
 })
 
