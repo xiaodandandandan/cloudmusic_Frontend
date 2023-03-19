@@ -88,7 +88,7 @@ const userLogout = () => {
 
 if(mainStore.isLogin){
   getUserpProfile()
-  //console.log(mainStore.userProfile.profile)
+  console.log(mainStore.userProfile.profile)
 }
 //用户名
 const nickName = computed(()=>{

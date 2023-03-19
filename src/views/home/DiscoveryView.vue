@@ -31,30 +31,8 @@
     <div class="title">推荐歌单</div>
     <div class="wrapper">
       <!--骨架屏-->
-      <template v-if="isSongsListLoading">
-        <el-card class="card" v-for="item in 15">
-          <el-skeleton animated :throttle="500">
-            <template #template>
-              <el-skeleton-item
-                variant="image"
-                style="width: 232.46px; height: 232.46px; margin-bottom: 10px"
-              />
-              <el-skeleton-item variant="p" />
-            </template>
-          </el-skeleton>
-        </el-card>
-      </template>
-      <el-card class="card" v-for="songlist in reSongList" :key="songlist.id">
-        <div class="image">
-          <div class="times">
-            <svg-icon icon="play"></svg-icon>
-            <span> {{ formateNumber(songlist.playCount) }}</span>
-          </div>
-          <svg-icon icon="playCircle" class="play_icon"></svg-icon>
-          <el-image :src="songlist.picUrl" fit="contain"></el-image>
-        </div>
-        <span style="margin-left: 10px;"> {{ songlist.name }}</span>
-      </el-card>
+      <SongListSkeleton v-if="isSongsListLoading" :times="18"/>
+      <SongList :songsList="reSongList" v-else />
     </div>
   </div>
   <!--最新音乐-->
@@ -121,6 +99,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import SongList from '@/components/SongsList/songList.vue'
+import SongListSkeleton from '@/components/SongsList/songListSkeleton.vue'
 import {
   getBanner,
   getRecommenedSongList,
@@ -128,16 +108,14 @@ import {
   getNewMovie
 } from '@/service'
 import { formateNumber } from '@/utils'
-type AnyObject = {
-  [key: string]: any
-}
+
 const isBannerLoading = ref(true)
 const isSongsListLoading = ref(true)
 const isMusicListLoading = ref(true)
-const bannerList = ref<AnyObject>()
-const reSongList = ref<AnyObject>()
-const newMusicList = ref<AnyObject>()
-const newMvList = ref<AnyObject>()
+const bannerList = ref<any[]>()
+const reSongList = ref<any[]>()
+const newMusicList = ref<any[]>()
+const newMvList = ref<any[]>()
 const initList = () => {
   getBanner().then((res) => {
     if (res.data.code === 200) {
@@ -147,7 +125,7 @@ const initList = () => {
   })
   getRecommenedSongList().then((res) => {
     if (res.data.code === 200) {
-      console.log('hhh', res.data)
+      console.log(res.data.result)
       reSongList.value = res.data.result
       isSongsListLoading.value = false
     }
@@ -160,7 +138,6 @@ const initList = () => {
   })
   getNewMovie().then((res) => {
     if (res.data.code === 200) {
-      console.log(res.data)
       newMvList.value = res.data.data
     }
   })
@@ -192,40 +169,6 @@ initList()
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  .card {
-    width: 19%;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    .image {
-      position: relative;
-      transition: all 0.5s;
-      cursor: pointer;
-      .play_icon {
-        position: absolute;
-        z-index: 2;
-        width: 40px;
-        height: 40px;
-        right: 5px;
-        bottom: 15px;
-        color: white;
-        opacity: 0;
-      }
-      &:hover {
-        transform: scale(1.05);
-        .play_icon {
-          opacity: 0.8;
-        }
-      }
-    }
-  }
-  ::v-deep .el-card__body{
-      padding: 0;
-    }
-  span {
-    display: block;
-    @include text-hidden();
-    margin: 5px auto;
-  }
 }
 
 .newMusic .wrapper {

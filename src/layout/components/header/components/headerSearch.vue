@@ -22,7 +22,6 @@ const mainStore = useMainStore()
 // 搜索关键字
 const getSearchKeywords = () => {
   getSearchDefault().then((res) => {
-    console.log(res)
     mainStore.searchKeyword = res.data.data.showKeyword
   })
 }

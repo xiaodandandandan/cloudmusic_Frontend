@@ -33,7 +33,8 @@
  .app-wrapper{
     width: 100%;
     position: absolute;
-    max-width: 1674px;
+    max-width: 100%;
+    min-width: 1366px;
     .el-header{
         border-bottom: 1px solid gray;
         padding: 0;
@@ -42,14 +43,14 @@
       min-width: 1366px;
     }
     .footer_hidden{
-      height: 838px;
+      height: 818px;
     }
     .footer_play{
-      height: 794px;
+      height: 774px;
     }
     .el-footer{
         background-color: rgb(247, 251, 255);
-
+        height: 80px;
     }
  }
  </style>
